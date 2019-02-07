@@ -1,0 +1,72 @@
+<?php
+    session_start();
+
+
+    $db = mysqli_connect('localhost','root','','sourav');
+
+    if(isset($_POST['register_btn'])){
+
+        $username = mysqli_real_escape_string($db, $_POST['username']);
+        $email = mysqli_real_escape_string($db, $_POST['email']);
+        $password = mysqli_real_escape_string($db, $_POST['password']);
+        $password2 = mysqli_real_escape_string($db, $_POST['password2']);
+
+//        echo "$username, $email, $password, $password2";
+
+        if($password==$password2){
+            //create user
+
+            //Hash Password
+//            $password = md5($password2);
+
+            //Normal Password
+            $username = ($password2);
+
+            $sql = "INSERT INTO reg(user, email, password) VALUES ('$username','$email','$password')";
+            mysqli_query($db, $sql);
+//            echo $check;
+            $_SESSION['massage'] = "You are logged In";
+            $_SESSION['username'] = $username;
+            header("location: home.php");
+        }else{
+            $_SESSION['massage']="The Two Password Don't match";
+//            header("location: home.php");
+        }
+    }
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Registration Form</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body class="reg_body">
+	<div class="loginBox">
+		<img src="image/user.png" class="user">
+		<h2>Registration Here</h2>
+
+		<form method="post" action="registration.php">
+			<p>User Name</p>
+			<input type="text" placeholder="User Name" name="username" required>
+
+			<p>Email</p>
+			<input type="text" placeholder="Enter Email" name="email" required>
+
+			<p>Password</p>
+			<input type="Password" placeholder="••••••" name="password" required>
+            <p>Confirm Password</p>
+            <input type="Password" placeholder="••••••" name="password2" required>
+
+			<input type="submit" name="register_btn" value="Registration">
+
+            <input type="sign" name="" value="Sign In">
+
+			<a href="">Forget Password</a>
+		</form>
+		
+	</div>
+
+</body>
+</html>
